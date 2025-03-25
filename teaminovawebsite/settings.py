@@ -25,8 +25,8 @@ SECRET_KEY = 'django-insecure-)=c!jofkznxbmt^%*dusrz)!e)&_^s0(@^9uz$tl#&d84hlda7
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
-
+ALLOWED_HOSTS = ['teaminova.com.br']
+STATIC_ROOT = 'static/'
 
 # Application definition
 
@@ -37,6 +37,7 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
+    'teaminovawebsite'
 ]
 
 MIDDLEWARE = [
