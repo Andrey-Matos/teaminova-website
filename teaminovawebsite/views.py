@@ -24,19 +24,27 @@ def home(request):
 
 def register_user(request):
     errors = []
-    current_user = User.objects.filter(email=request.POST["email"]).first()
+    success = False
 
+    if request.method == "POST":
+        email = request.POST.get("email")
+        password = request.POST.get("password")
+        confirm_password = request.POST.get("confirmPassword")
+        name = request.POST.get("name")
 
-    if current_user:
-        errors.append("the given email is already being used")
-    if request.POST["password"] != request.POST["confirmPassword"]:
-        errors.append("passwords don't match")
-    else:
-        try:
-            validate_password(request.POST["password"])
-        except ValidationError as e:
-            for i in e:
-                errors.append(i)
-        user = User.objects.create_user(username=request.POST["name"], email=request.POST["email"], password=request.POST["password"])
+        current_user = User.objects.filter(email=email).first()
 
-    return render(request, "authenticate/login.html", {"errors": errors})
+        if current_user:
+            errors.append("The given email is already being used")
+        elif password != confirm_password:
+            errors.append("Passwords don't match")
+        else:
+            try:
+                validate_password(password)
+            except ValidationError as e:
+                errors.extend(e)
+            else:
+                User.objects.create_user(username=name, email=email, password=password)
+                success = True if not errors else False
+
+    return render(request, "authenticate/login.html", {"errors": errors, "success": success})
