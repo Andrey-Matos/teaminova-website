@@ -4,6 +4,7 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+
 User = get_user_model()
 
 def login_user(request):
@@ -15,8 +16,7 @@ def login_user(request):
             login(request, user)
             return redirect("home")
         return render(request, "authenticate/login.html", {"error": "Invalid email or password."})
-    else:
-        return render(request, "authenticate/login.html", {})
+    return render(request, "authenticate/login.html", {})
 
 @login_required
 def home(request):
