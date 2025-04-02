@@ -1,130 +1,62 @@
 <!DOCTYPE html>
 <html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-    {% load static %}
-    <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
-    <script src="https://kit.fontawesome.com/885339298e.js" crossorigin="anonymous"></script>
-</head>
-<body>
-    <div class="container">
-        <div class="form-box">
-            <h1 id="title">Sign Up</h1>
-            <form id="signupForm" method="POST" action="">
-                {% csrf_token %}
-                <div class="input-group">
-                    <div class="input-field" id="nameField">
-                        <i class="fa-solid fa-user leading-icon"></i>
-                        <input type="text" name="name" placeholder="Full name">
-                    </div>
-
-                    <div class="input-field">
-                        <i class="fa-solid fa-envelope leading-icon"></i>
-                        <input type="email" name="email" placeholder="Email" required>
-                    </div>
-
-                    <div class="input-field">
-                        <i class="fa-solid fa-lock leading-icon"></i>
-                        <input type="password" id="password" name="password" placeholder="Password" required>
-                        <i id="toggle-password" class="fa-solid fa-eye" data-target="password"></i>
-                    </div>
-
-                    <div class="input-field">
-                        <i class="fa-solid fa-lock leading-icon"></i>
-                        <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm password">
-                        <i id="toggle-confirm-password" class="fa-solid fa-eye" data-target="confirmPassword"></i>
-                    </div>
-
-                    <p>Forgot your password? <a href="#">Click here!</a></p>
-                </div>
-                <button type="submit" class="enter">Register</button>
-
-                <label class="sswitch">
-                    <input type="checkbox">
-                    <span class="slider round"></span>
-                </label>
-                <p id="signin">Sign in</p>
-                <p id="signup">Sign in</p>
-            </form>
-            <br>
-
-            <div id="messages">
-                {% if errors %}
+   <head>
+      <meta charset="UTF-8">
+      <meta name="viewport" content="width=device-width, initial-scale=1.0">
+      <title>Authentication</title>
+      {% load static %}
+      <link rel="stylesheet" type="text/css" href="{% static 'css/login.css' %}">
+      <script src="https://kit.fontawesome.com/885339298e.js" crossorigin="anonymous"></script>
+   </head>
+   <body>
+      <div class="container">
+      <div class="form-box">
+         <div class="header-container">
+            <h1>Welcome</h1>
+            <p class="subtext">Sign in to your account or create a new one.</p>
+            <div class="toggle-container">
+               <div id="loginBtn" class="toggle-btn" onclick="toggleAuth(this, 'login')">Login</div>
+               <div id="registerBtn" class="toggle-btn active" onclick="toggleAuth(this, 'register')">Register</div>
+            </div>
+            <div class="header-underline"></div>
+         </div>
+         <form id="authForm" method="POST" action="{% url 'register_user' %}">
+            {% csrf_token %}
+            <div class="input-group">
+               <div class="input-field" id="nameField">
+                  <i class="fa-solid fa-user leading-icon"></i>
+                  <input type="text" name="name" placeholder="Full Name">
+               </div>
+               <div class="input-field">
+                  <i class="fa-solid fa-envelope leading-icon"></i>
+                  <input type="email" name="email" placeholder="Email" required>
+               </div>
+               <div class="input-field">
+                  <i class="fa-solid fa-lock leading-icon"></i>
+                  <input type="password" id="password" name="password" placeholder="Password" required>
+                  <i class="fa-solid fa-eye toggle-password" data-target="password"></i>
+               </div>
+               <div class="input-field" id="confirmPasswordField">
+                  <i class="fa-solid fa-lock leading-icon"></i>
+                  <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                  <i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i>
+               </div>
+               <p id="forgotPassword" class="hidden">Forgot your password? <a href="#">Click here!</a></p>
+            </div>
+            <button type="submit" class="enter">Register</button>
+         </form>
+         <br>
+         <div id="messages">
+            {% if errors %}
                 {% for error in errors %}
                     <p class="error-message" style="color: red">{{ error }}</p>
-                    <br>
                 {% endfor %}
-                {% endif %}
-
-                {% if success %}
-                    <p class="success-message" style="color: green">Registered successfully!</p>
-                    <p class="success-message" style="color: green">Please proceed to login</p>
-                    <br>
-                {% endif %}
-            </div>
-        </div>
-    </div>
-<script>document.addEventListener("DOMContentLoaded", function () {
-  clearMessages();
-  loginOrRegister();
-});
-
-let switchInput = document.querySelector(".sswitch input");
-let nameField = document.getElementById("nameField");
-let confirmPassword = document.getElementById("confirmPassword");
-let password = document.getElementById("password");
-let title = document.getElementById("title");
-let enterButton = document.querySelector(".enter");
-let form = document.getElementById("signupForm");
-
-function loginOrRegister() {
-  if (enterButton.innerHTML === "Register") {
-    form.action = "{% url 'register_user' %}";
-  } else {
-    form.action = "{% url 'login' %}";
-  }
-}
-
-function clearMessages() {
-  let messages = document.getElementById("messages");
-  messages.innerHTML = "";
-}
-
-switchInput.addEventListener("change", function () {
-  clearMessages();
-  if (this.checked) {
-    nameField.style.maxHeight = "0";
-    confirmPassword.parentElement.style.maxHeight = "0";
-    title.innerHTML = "Sign in";
-    enterButton.innerHTML = "Login";
-  } else {
-    nameField.style.maxHeight = "60px";
-    confirmPassword.parentElement.style.maxHeight = "60px";
-    title.innerHTML = "Sign up";
-    enterButton.innerHTML = "Register";
-  }
-  loginOrRegister();
-});
-
-document
-  .querySelectorAll("#toggle-password, #toggle-confirm-password")
-  .forEach((icon) => {
-    icon.addEventListener("click", function () {
-      let targetId = this.getAttribute("data-target");
-      let passwordField = document.getElementById(targetId);
-      if (passwordField.type === "password") {
-        passwordField.type = "text";
-        this.classList.remove("fa-eye");
-        this.classList.add("fa-eye-slash");
-      } else {
-        passwordField.type = "password";
-        this.classList.remove("fa-eye-slash");
-        this.classList.add("fa-eye");
-      }
-    });
-  });
-</script>
-</body>
+            {% endif %}
+            {% if success %}
+                <p class="success-message" style="color: green">Registered successfully! Please proceed to login.</p>
+            {% endif %}
+         </div>
+      </div>
+      <script src="{% static 'js/login.js' %}"> </script>
+   </body>
 </html>

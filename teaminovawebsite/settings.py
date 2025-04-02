@@ -25,7 +25,7 @@ AUTH_USER_MODEL = "teaminovawebsite.User"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = ['teaminova.com.br']
+ALLOWED_HOSTS = ['localhost', 'teaminova.com.br']
 STATIC_ROOT = 'static/'
 
 # Application definition
