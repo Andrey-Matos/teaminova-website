@@ -4,10 +4,14 @@ from django.contrib.auth import authenticate, login
 from django.contrib.auth.decorators import login_required
 from django.core.exceptions import ValidationError
 from django.contrib.auth import get_user_model
+from django.contrib.auth import logout
 
 User = get_user_model()
 
 def login_user(request):
+    if request.user.is_authenticated:
+        redirect("home")
+
     if request.method == "POST":
         email = request.POST["email"]
         password = request.POST["password"]
@@ -20,6 +24,9 @@ def login_user(request):
 
 @login_required
 def home(request):
+    if not request.user.is_authenticated:
+        redirect("login")
+
     return render(request, "home/home.html", {})
 
 def register_user(request):
@@ -48,3 +55,8 @@ def register_user(request):
                 success = True if not errors else False
 
     return render(request, "authenticate/login.html", {"errors": errors, "success": success})
+
+@login_required
+def log_user_out(request):
+    logout(request)
+    return redirect("login")

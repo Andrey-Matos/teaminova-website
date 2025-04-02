@@ -1,3 +1,6 @@
 <body class="text-center">
     <h1>You are logged in !!!! </h1>
+    <form action="{% url 'logout' %}" method="post">
+        {% csrf_token %}
+        <button type="submit">logout</a>
 </body>
