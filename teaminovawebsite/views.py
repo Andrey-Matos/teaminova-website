@@ -52,8 +52,8 @@ def register_user(request):
                 errors.extend(e)
             else:
                 User.objects.create_user(username=name, email=email, password=password)
-                success = True if not errors else False
-
+                success = not errors
+    print(errors)
     return render(request, "authenticate/login.html", {"errors": errors, "success": success})
 
 @login_required

@@ -3,9 +3,10 @@ document.addEventListener("DOMContentLoaded", function () {
 });
 
 function clearMessages() {
-  document
-    .querySelectorAll(".error-message")
-    .forEach((error) => error.remove());
+  const errorMessage = document.getElementById("error-message");
+  if (errorMessage) {
+    errorMessage.remove();
+  }
 }
 
 function toggleAuth(selected, mode) {

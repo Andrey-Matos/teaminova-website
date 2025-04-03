@@ -10,53 +10,54 @@
    </head>
    <body>
       <div class="container">
-      <div class="form-box">
-         <div class="header-container">
-            <h1>Welcome</h1>
-            <p class="subtext">Sign in to your account or create a new one.</p>
-            <div class="toggle-container">
-               <div id="loginBtn" class="toggle-btn" onclick="toggleAuth(this, 'login')">Login</div>
-               <div id="registerBtn" class="toggle-btn active" onclick="toggleAuth(this, 'register')">Register</div>
+         <div class="form-box">
+            <div class="header-container">
+               <h1>Welcome</h1>
+               <p class="subtext">Sign in to your account or create a new one.</p>
+               <div class="toggle-container">
+                  <div id="loginBtn" class="toggle-btn" onclick="toggleAuth(this, 'login')">Login</div>
+                  <div id="registerBtn" class="toggle-btn active" onclick="toggleAuth(this, 'register')">Register</div>
+               </div>
+               <div class="header-underline"></div>
             </div>
-            <div class="header-underline"></div>
-         </div>
-         <form id="authForm" method="POST" action="{% url 'register_user' %}">
-            {% csrf_token %}
-            <div class="input-group">
-               <div class="input-field" id="nameField">
-                  <i class="fa-solid fa-user leading-icon"></i>
-                  <input type="text" name="name" placeholder="Full Name">
+            <form id="authForm" method="POST" action="{% url 'register_user' %}">
+               {% csrf_token %}
+               <div class="input-group">
+                  <div class="input-field" id="nameField">
+                     <i class="fa-solid fa-user leading-icon"></i>
+                     <input type="text" name="name" placeholder="Full Name">
+                  </div>
+                  <div class="input-field">
+                     <i class="fa-solid fa-envelope leading-icon"></i>
+                     <input type="email" name="email" placeholder="Email" required>
+                  </div>
+                  <div class="input-field">
+                     <i class="fa-solid fa-lock leading-icon"></i>
+                     <input type="password" id="password" name="password" placeholder="Password" required>
+                     <i class="fa-solid fa-eye toggle-password" data-target="password"></i>
+                  </div>
+                  <div class="input-field" id="confirmPasswordField">
+                     <i class="fa-solid fa-lock leading-icon"></i>
+                     <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
+                     <i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i>
+                  </div>
+                  <p id="forgotPassword" class="hidden">Forgot your password? <a href="#">Click here!</a></p>
                </div>
-               <div class="input-field">
-                  <i class="fa-solid fa-envelope leading-icon"></i>
-                  <input type="email" name="email" placeholder="Email" required>
-               </div>
-               <div class="input-field">
-                  <i class="fa-solid fa-lock leading-icon"></i>
-                  <input type="password" id="password" name="password" placeholder="Password" required>
-                  <i class="fa-solid fa-eye toggle-password" data-target="password"></i>
-               </div>
-               <div class="input-field" id="confirmPasswordField">
-                  <i class="fa-solid fa-lock leading-icon"></i>
-                  <input type="password" id="confirmPassword" name="confirmPassword" placeholder="Confirm Password">
-                  <i class="fa-solid fa-eye toggle-password" data-target="confirmPassword"></i>
-               </div>
-               <p id="forgotPassword" class="hidden">Forgot your password? <a href="#">Click here!</a></p>
+               <button type="submit" class="enter">Register</button>
+            </form>
+            <br>
+            <div id="messages">
+               {% if errors %}
+                  {% for error in errors %}
+                     <p id="error-message" style="color: red">{{ error }}</p>
+                  {% endfor %}
+               {% endif %}
+               {% if success %}
+                  <p class="success-message" style="color: green">Registered successfully! Please proceed to login.</p>
+               {% endif %}
             </div>
-            <button type="submit" class="enter">Register</button>
-         </form>
-         <br>
-         <div id="messages">
-            {% if errors %}
-                {% for error in errors %}
-                    <p class="error-message" style="color: red">{{ error }}</p>
-                {% endfor %}
-            {% endif %}
-            {% if success %}
-                <p class="success-message" style="color: green">Registered successfully! Please proceed to login.</p>
-            {% endif %}
          </div>
       </div>
-      <script src="{% static 'js/login.js' %}"> </script>
+      <script src="{% static 'js/login.js' %}"></script>
    </body>
 </html>
