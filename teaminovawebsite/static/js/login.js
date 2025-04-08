@@ -18,6 +18,7 @@ function toggleAuth(selected, mode) {
   selected.classList.add("active");
 
   const isLogin = mode === "login";
+
   document.getElementById("nameField").classList.toggle("hidden", isLogin);
   document
     .getElementById("confirmPasswordField")
@@ -25,6 +26,9 @@ function toggleAuth(selected, mode) {
   document
     .getElementById("forgotPassword")
     .classList.toggle("hidden", !isLogin);
+  document
+    .getElementById("passwordRequirements")
+    .classList.toggle("hidden", isLogin);
 
   document.querySelector(".enter").textContent = isLogin ? "Login" : "Register";
   document.getElementById("authForm").action = isLogin
