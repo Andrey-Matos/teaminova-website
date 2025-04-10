@@ -109,9 +109,15 @@
                 </form>
                 <br />
                 <div id="messages">
-                    {% if errors %} {% for error in errors %}
-                    <p id="error-message" style="color: red">{{ error }}</p>
-                    {% endfor %} {% endif %} {% if success %}
+                    {% if errors %}
+                    <div class="error-container">
+                        {% for error in errors %}
+                        <div class="error-message" style="color: red">
+                            {{ error }}
+                        </div>
+                        {% endfor %}
+                    </div>
+                    {% endif %} {% if success %}
                     <p class="success-message" style="color: green">
                         Registered successfully! Please proceed to login.
                     </p>

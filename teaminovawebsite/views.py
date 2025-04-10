@@ -18,8 +18,9 @@ def login_user(request):
         user = authenticate(request, email=email, password=password)
         if user is not None:
             login(request, user)
+            print(user)
             return redirect("home")
-        return render(request, "authenticate/login.html", {"errors": "Invalid email or password."})
+        return render(request, "authenticate/login.html", {"errors": ["Invalid email or password."]})
     return render(request, "authenticate/login.html", {})
 
 @login_required
